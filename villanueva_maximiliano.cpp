@@ -83,7 +83,13 @@ fclose(p);
             return false;
         }
     }
-
+    bool operator<(int tamanio) {
+        if(this->importe < tamanio) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
     operator float() const {
