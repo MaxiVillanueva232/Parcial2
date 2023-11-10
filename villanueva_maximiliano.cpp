@@ -28,7 +28,7 @@ public:
     void Mostrar(){
     cout<<"Codigo de Cliente: "<<getCodigoCliente()<<endl;
     cout<<"Nombre: "<<getNombre()<<endl;
-    cout<<"Importe"<<getImporte()<<endl;
+    cout<<"Importe: "<<getImporte()<<endl;
 }
 
 
@@ -112,14 +112,35 @@ ArchivoNuevoPunto1(){}
     // }
 };
 
-void Punto1();
-void Punto2();
-void Punto3();
-void Punto4();
+/////////////////////////
+void aPunto1();
+void aPunto2();
+void aPunto3();
+/////////////////////////
+void bPunto1();
+void bPunto2();
+void bPunto3();
+/////////////////////////
+void PonerCeroVector(int vec[],int tam);
+void MostrarVector(int vec[],int tam);
+/////////////////////////
 
 int main(){
 
-Punto1();
+    Cliente objC;
+    Tour obtT;
+    Venta objV;
+    Guia obtG;
+
+    // objC.MostrarArchivo();
+    // obtT.MostrarArchivo();
+    // objV.MostrarArchivo();
+    // obtG.MostrarArchivo();
+
+    cout<<"aPunto1"<<endl;
+    aPunto1();
+    cout<<"aPunto3"<<endl;
+    aPunto3();
 
 
 	cout<<endl;
@@ -127,204 +148,241 @@ Punto1();
     return 0;
 }
 
-void Punto1(){
+/////////////////////////////////////////////////////////////////////////
+void aPunto1(){
 
     ArchivoNuevoPunto1 objAN;
 
-    Venta obtV;
+    ArchivoClientes ARc("clientes.dat");
+    Cliente obtC;
+
+    int tam1;
+    tam1 = ARc.contarRegistros();
+
+    int *acumVec = new int[tam1];
+
+    PonerCeroVector(acumVec,tam1);
+    
     ArchivoVentas ARv("ventas.dat");
-    
-    int tam1;
-    tam1 = ARv.contarRegistros();
-
-
-    Cliente obtC;
-    ArchivoClientes ARc("clientes.dat");
-
-
-
-    int tam2;
-    tam2 = ARc.contarRegistros();
-
-
-    for(int x=0; x<tam1; x++){
-        bool bandera = false;
-
-        if((obtV.getEstado()==true)&&(obtV.getImporte()<15000)){
-
-            for(int y=0; y<tam2; y++){
-                
-                if(((strcmp(obtV.getNumeroDeCliente(), obtC.getCodigoCliente()) == 0)) && (obtC.getEstado() == true)){
-                    bandera = true;
-                }
-
-            }
-
-        }
-
-        if (bandera == true)
-        {
-            objAN.setCodigoCliente(obtC.getCodigoCliente());
-            objAN.setImporte(obtV.getImporte());
-            objAN.setNombre(obtC.getNombre());
-            if(objAN.grabarRegistro()){}//cout<<"Perfeto PA"<<endl;}
-        }
-
-    }
-    objAN.MostrarArchivo();
-
-
-    //objAN.LimpiarArchivo();
-
-}
-
-void Punto2(){
-
-    ArchivoNuevoPunto1 objAN;
-
     Venta obtV;
-    ArchivoVentas ARv("Ventas.dat");
-    
-    int tam1;
-    tam1 = ARv.contarRegistros();
-
-    Cliente obtC;
-    ArchivoClientes ARc("clientes.dat");
 
     int tam2;
-    tam2 = ARc.contarRegistros();
-
-    int cont=0;
-
-    char **VecCodigoCliente = new char*[tam2];
-    int *vecImporte = new int[tam1];
-    char **vecNombre = new char*[tam2];
-
+    tam2 = ARv.contarRegistros();
 
     for(int x=0; x<tam1; x++){
-        bool bandera = false;
+        obtC = ARc.leerRegistro(x);
 
-        if((obtV.getEstado()==true)&&(obtV.getImporte()<15000)){
+            if((obtC.getEstado()==true)){
 
-            for(int y=0; y<tam2; y++){
-                
-                if(((strcmp(obtV.getNumeroDeCliente(), obtC.getCodigoCliente()) == 0)) && (obtC.getEstado() == true)){
-                    bandera = true;
+                for(int y=0; y<tam2; y++){
+
+                    obtV = ARv.leerRegistro(y);
+
+                    if((obtV.getEstado()==true)&&(obtV.getImporte()<15000)){
+
+                        if(((strcmp(obtV.getNumeroDeCliente(), obtC.getCodigoCliente()) == 0))){
+                            acumVec[x]=acumVec[x]+obtV.getImporte();
+                        }
+
+                    }
+
                 }
-
             }
 
-        }
-
-        if (bandera == true)
-        {
-
-            objAN.setCodigoCliente(obtC.getCodigoCliente());
-            objAN.setImporte(obtV.getImporte());
-            objAN.setNombre(obtC.getNombre());
-            if(objAN.grabarRegistro()){}//cout<<"Perfeto PA"<<endl;}
-
-            VecCodigoCliente[cont] = new char[30];   // Asignar memoria para cada VecCodigoCliente[cont]
-            strcpy(VecCodigoCliente[cont], obtC.getCodigoCliente());
-
-            vecImporte[cont] = obtV.getImporte();
-            
-            vecNombre[cont] = new char[30];
-            strcpy(vecNombre[cont], obtC.getNombre());
-
-            cont++;
-        }
 
     }
 
-    //objAN.MostrarArchivo();
-    //objAN.LimpiarArchivo();
+//CARGAR y MOSTRAR ARCHIVOS
+for(int x=0; x<tam1; x++){
+    obtC = ARc.leerRegistro(x);
 
-//Mostrar Vector
-
-cout<<cont<<endl;
-
-    for(int i=0; i<cont; i++){
-        cout<<"Codigo de Cliente: "<<VecCodigoCliente[i]<<endl;
-        cout<<"Importe: "<<vecImporte[i]<<endl;
-        cout<<"Nombre: "<<vecNombre[i]<<endl;
+    if(acumVec[x]>0){
+        objAN.setCodigoCliente(obtC.getCodigoCliente());
+        objAN.setNombre(obtC.getNombre());
+        objAN.setImporte(acumVec[x]);
+        if(objAN.grabarRegistro()){}//cout<<"Perfeto PA"<<endl;}
     }
 
-//LIBERAR MEMORIA DINAMICA
-
-for(int i=0; i<cont; i++){
-delete [] VecCodigoCliente[i];
-delete [] vecNombre[i];
-}
-
-delete vecImporte;
 
 }
-
-void Punto3(){
-
-    ArchivoNuevoPunto1 objAN;
-
-    Venta obtV;
-    ArchivoVentas ARv("Ventas.dat");
-    
-    int tam1;
-    tam1 = ARv.contarRegistros();
-
-
-    Cliente obtC;
-    ArchivoClientes ARc("clientes.dat");
-
-
-
-    int tam2;
-    tam2 = ARc.contarRegistros();
-
-    for(int x=0; x<tam1; x++){
-        bool bandera = false;
-
-        ArchivoNuevoPunto1 ObjArP3(obtV.getImporte());
-
-        if((obtV.getEstado()==true)&&(ObjArP3<15000)){
-
-            for(int y=0; y<tam2; y++){
-                
-                if(((strcmp(obtV.getNumeroDeCliente(), obtC.getCodigoCliente()) == 0)) && (obtC.getEstado() == true)){
-                    bandera = true;
-                }
-
-            }
-
-        }
-
-        if (bandera == true)
-        {
-            objAN.setCodigoCliente(obtC.getCodigoCliente());
-            objAN.setImporte(ObjArP3);
-            objAN.setNombre(obtC.getNombre());
-            if(objAN.grabarRegistro()){}//cout<<"Perfeto PA"<<endl;}
-        }
-
-    }
     objAN.MostrarArchivo();
-    
-
     objAN.LimpiarArchivo();
 
+
+
+    delete acumVec;
+
 }
 
-void Punto4(){
+void aPunto2(){
+
+    ArchivoNuevoPunto1 objAN;
+
+    ArchivoClientes ARc("clientes.dat");
+    Cliente obtC;
+
+    int tam1;
+    tam1 = ARc.contarRegistros();
+
+    char **VecCodigoCliente = new char*[tam1];
+    char **vecNombre = new char*[tam1];
+    int *vecImporte = new int[tam1];
+
+    PonerCeroVector(vecImporte,tam1);
+    
+    ArchivoVentas ARv("ventas.dat");
+    Venta obtV;
+
+    int tam2;
+    tam2 = ARv.contarRegistros();
+
+    for(int x=0; x<tam1; x++){
+        obtC = ARc.leerRegistro(x);
+
+            if((obtC.getEstado()==true)){
+
+                for(int y=0; y<tam2; y++){
+
+                    obtV = ARv.leerRegistro(y);
+
+                    if((obtV.getEstado()==true)&&(obtV.getImporte()<15000)){
+
+                        if(((strcmp(obtV.getNumeroDeCliente(), obtC.getCodigoCliente()) == 0))){
+                            VecCodigoCliente[x] = new char[30];   // Asignar memoria para cada VecCodigoCliente[cont]
+                            strcpy(VecCodigoCliente[x],obtC.getCodigoCliente());
+
+                            vecImporte[x]=vecImporte[x]+obtV.getImporte();
+
+                            vecNombre[x] = new char[30];   // Asignar memoria para cada VecCodigoCliente[cont]
+                            strcpy(vecNombre[x],obtC.getNombre());
+                        }
+
+                    }
+
+                }
+            }
+
+
+    }
+
+
+
+//CARGAR y MOSTRAR ARCHIVOS
+for(int x=0; x<tam1; x++){
+
+
+    if(vecImporte[x]>0){
+
+        cout<<"Codigo de Cliente: "<<VecCodigoCliente[x]<<endl;
+        cout<<"Nombre: "<<vecNombre[x]<<endl;
+        cout<<"Importe: "<<vecImporte[x]<<endl;
+    }
+
+
+
+    delete vecImporte;
+
+}
+}
+
+void aPunto3(){
+
+    ArchivoNuevoPunto1 objAN;
+
+    ArchivoClientes ARc("clientes.dat");
+    Cliente obtC;
+
+    int tam1;
+    tam1 = ARc.contarRegistros();
+
+    int *acumVec = new int[tam1];
+
+    PonerCeroVector(acumVec,tam1);
+    
+    ArchivoVentas ARv("ventas.dat");
+    Venta obtV;
+
+    int tam2;
+    tam2 = ARv.contarRegistros();
+
+    for(int x=0; x<tam1; x++){
+        obtC = ARc.leerRegistro(x);
+
+            if((obtC.getEstado()==true)){
+
+                for(int y=0; y<tam2; y++){
+
+                    obtV = ARv.leerRegistro(y);
+                    ArchivoNuevoPunto1 ObjArP3(obtV.getImporte());
+
+
+                    if((obtV.getEstado()==true)&&(ObjArP3<15000)){
+
+                        if(((strcmp(obtV.getNumeroDeCliente(), obtC.getCodigoCliente()) == 0))){
+                            acumVec[x]=acumVec[x]+obtV.getImporte();
+                        }
+
+                    }
+
+                }
+            }
+
+
+    }
+
+//CARGAR y MOSTRAR ARCHIVOS
+for(int x=0; x<tam1; x++){
+    obtC = ARc.leerRegistro(x);
+
+    if(acumVec[x]>0){
+        objAN.setCodigoCliente(obtC.getCodigoCliente());
+        objAN.setNombre(obtC.getNombre());
+        objAN.setImporte(acumVec[x]);
+        if(objAN.grabarRegistro()){}//cout<<"Perfeto PA"<<endl;}
+    }
+
+
+}
+    objAN.MostrarArchivo();
+    objAN.LimpiarArchivo();
+
+
+
+    delete acumVec;
 
 }
 
+/////////////////////////////////////////////////////////////////////////
+void bPunto1(){
+
+}
+
+void bPunto2(){
+
+}
+
+void bPunto3(){
+
+}
+
+/////////////////////////////////////////////////////////////////////////
 
 
 
 
 
 
+void PonerCeroVector(int vec[],int tam){
+    for(int i=0; i<tam; i++){
+        vec[i]=0;
+    }
+}
 
-
+void MostrarVector(int vec[],int tam){
+    for(int i=0; i<tam; i++){
+        cout<<vec[i]<<endl;
+    }
+}
 
 
 

@@ -65,15 +65,18 @@ public:
         estado=true;
     }
     void Mostrar(){
-        cout<<codigoCliente<<endl;
-        cout<<categoria<<endl;
-        cout<<nombre<<endl;
-        cout<<telefono<<endl;
-        cout<<direccion<<endl;
-        cout<<telefono<<endl;
-        cout<<email<<endl;
+        cout<<"codigoCliente: "<<codigoCliente<<endl;
+        cout<<"categoria: "<<categoria<<endl;
+        cout<<"nombre: "<<nombre<<endl;
+        cout<<"telefono: "<<telefono<<endl;
+        cout<<"direccion: "<<direccion<<endl;
+        cout<<"telefono: "<<telefono<<endl;
+        cout<<"email: "<<email<<endl;
+        cout<<"inscripcion:"<<endl;
         inscripcion.Mostrar();
-        if(!estado) cout<<"ESTA BORRADO"<<endl<<endl;
+        
+        if(!estado){cout<<"ESTA BORRADO"<<endl<<endl;
+        }else{ cout<<"estado: "<<estado<<endl;}
     }
 
 
@@ -92,6 +95,24 @@ public:
     const char *getDireccion(){return direccion;}
     bool getEstado(){return estado;}
     Fecha getInscripcion(){return inscripcion;}
+
+    void MostrarArchivo(){
+    Cliente ClassM;
+    FILE *p;
+
+    p=fopen("clientes.dat","rb");
+    if(p==NULL){
+        cout<<"ERROR de ARCHIVO"<<endl;
+        system("pause");
+    }
+
+    while(fread(&ClassM,sizeof (Cliente),1,p)==1){
+    ClassM.Mostrar();
+    cout<<endl;
+    }
+    fclose(p);
+    }
+
 };
 
 class ArchivoClientes{
@@ -149,11 +170,14 @@ public:
         estado=true;
     }
     void Mostrar(){
-        cout<<IDpersonal<<endl;
-        cout<<nombre<<endl;
-        cout<<telefono<<endl;
-        cout<<direccion<<endl;
-        if(!estado) cout<<"ESTA BORRADO"<<endl<<endl;
+        
+        cout<<"IDpersonal: "<<IDpersonal<<endl;
+        cout<<"nombre: "<<nombre<<endl;
+        cout<<"telefono: "<<telefono<<endl;
+        cout<<"email: "<<email<<endl;
+        cout<<"direccion: "<<direccion<<endl;
+        if(!estado){cout<<"ESTA BORRADO"<<endl<<endl;
+        }else{ cout<<"estado: "<<estado<<endl;}
     }
 
 
@@ -171,6 +195,22 @@ public:
     const char *getEmail(){return email;}
     bool getEstado(){return estado;}
 
+    void MostrarArchivo(){
+    Guia ClassM;
+    FILE *p;
+
+    p=fopen("guias.dat","rb");
+    if(p==NULL){
+        cout<<"ERROR de ARCHIVO"<<endl;
+        system("pause");
+    }
+
+    while(fread(&ClassM,sizeof (Guia),1,p)==1){
+    ClassM.Mostrar();
+    cout<<endl;
+    }
+    fclose(p);
+    }
 };
 
 class ArchivoGuias{
@@ -224,10 +264,11 @@ public:
         estado=true;
     }
     void Mostrar(){
-        cout<<codigoTour<<endl;
-        cout<<nombre<<endl;
-        cout<<tipo<<endl;
-        if(estado==false) cout<<"BORRADO"<<endl;
+        cout<<"codigoTour: "<<codigoTour<<endl;
+        cout<<"nombre: "<<nombre<<endl;
+        cout<<"tipo: "<<tipo<<endl;
+        if(!estado){cout<<"ESTA BORRADO"<<endl<<endl;
+        }else{ cout<<"estado: "<<estado<<endl;}
     }
 
     void setCodigoTour(int ct){codigoTour=ct;}
@@ -239,6 +280,24 @@ public:
     const char *getNombre(){return nombre;}
     int getTipo(){return tipo;}
     bool getEstado(){return estado;}
+
+    void MostrarArchivo(){
+    Tour ClassM;
+    FILE *p;
+
+    p=fopen("tours.dat","rb");
+    if(p==NULL){
+        cout<<"ERROR de ARCHIVO"<<endl;
+        system("pause");
+    }
+
+    while(fread(&ClassM,sizeof (Tour),1,p)==1){
+    ClassM.Mostrar();
+    cout<<endl;
+    }
+    fclose(p);
+    }
+
 };
 
 
@@ -299,14 +358,32 @@ public:
         estado=true;
     }
     void Mostrar(){
-        cout<<numeroVenta<<endl;
-        cout<<codigoTour<<endl;
-        cout<<numeroDeCliente<<endl;
-        cout<<IDpersonal<<endl;
-        cout<<importe<<endl;
+        cout<<"numeroVenta: "<<numeroVenta<<endl;
+        cout<<"codigoTour: "<<codigoTour<<endl;
+        cout<<"numeroDeCliente: "<<numeroDeCliente<<endl;
+        cout<<"IDpersonal: "<<IDpersonal<<endl;
+        cout<<"importe: "<<importe<<endl;
         fechaVenta.Mostrar();
-        if(estado==false) cout<<"BORRADO"<<endl;
+        if(!estado){cout<<"ESTA BORRADO"<<endl<<endl;
+        }else{ cout<<"estado: "<<estado<<endl;}
     }
+    void MostrarArchivo(){
+    Venta ClassM;
+    FILE *p;
+
+    p=fopen("ventas.dat","rb");
+    if(p==NULL){
+        cout<<"ERROR de ARCHIVO"<<endl;
+        system("pause");
+    }
+
+    while(fread(&ClassM,sizeof (Venta),1,p)==1){
+    ClassM.Mostrar();
+    cout<<endl;
+    }
+    fclose(p);
+    }
+
 
     void setNumeroVenta(int nv){numeroVenta=nv;}
     void setCodigoTour(int ct){codigoTour=ct;}
