@@ -77,7 +77,7 @@ fclose(p);
 //SOBRACARGA DE OPERADORES
 
     bool operator<(float tamanio) {
-        if(this->importe > tamanio) {
+        if(this->importe < tamanio) {
             return true;
         } else {
             return false;
@@ -192,6 +192,8 @@ void aPunto1(){
 
     }
 
+//MostrarVector(acumVec,tam1);
+
 //CARGAR y MOSTRAR ARCHIVOS
 for(int x=0; x<tam1; x++){
     obtC = ARc.leerRegistro(x);
@@ -267,7 +269,7 @@ void aPunto2(){
 
 
 
-//CARGAR y MOSTRAR ARCHIVOS
+//CARGAR y DELETE archivo y MOSTRAR ARCHIVOS
 for(int x=0; x<tam1; x++){
 
 
@@ -279,10 +281,11 @@ for(int x=0; x<tam1; x++){
     }
 
 
+    delete VecCodigoCliente[x];
+    delete vecNombre[x];
+}
 
     delete vecImporte;
-
-}
 }
 
 void aPunto3(){
@@ -355,6 +358,69 @@ for(int x=0; x<tam1; x++){
 /////////////////////////////////////////////////////////////////////////
 void bPunto1(){
 
+    ArchivoNuevoPunto1 objAN;
+
+    ArchivoClientes ARc("clientes.dat");
+    Cliente obtC;
+
+    int tam1;
+    tam1 = ARc.contarRegistros();
+
+    int *acumVec = new int[tam1];
+
+    PonerCeroVector(acumVec,tam1);
+    
+    ArchivoVentas ARv("ventas.dat");
+    Venta obtV;
+
+    int tam2;
+    tam2 = ARv.contarRegistros();
+
+    for(int x=0; x<tam1; x++){
+        obtC = ARc.leerRegistro(x);
+
+            if((obtC.getEstado()==true)){
+
+                for(int y=0; y<tam2; y++){
+
+                    obtV = ARv.leerRegistro(y);
+
+                    if((obtV.getEstado()==true)&&(obtV.getImporte()<15000)){
+
+                        if(((strcmp(obtV.getNumeroDeCliente(), obtC.getCodigoCliente()) == 0))){
+                            acumVec[x]=acumVec[x]+obtV.getImporte();
+                        }
+
+                    }
+
+                }
+            }
+
+
+    }
+
+//MostrarVector(acumVec,tam1);
+
+//CARGAR y MOSTRAR ARCHIVOS
+for(int x=0; x<tam1; x++){
+    obtC = ARc.leerRegistro(x);
+
+    if(acumVec[x]>0){
+        objAN.setCodigoCliente(obtC.getCodigoCliente());
+        objAN.setNombre(obtC.getNombre());
+        objAN.setImporte(acumVec[x]);
+        if(objAN.grabarRegistro()){}//cout<<"Perfeto PA"<<endl;}
+    }
+
+
+}
+    objAN.MostrarArchivo();
+    objAN.LimpiarArchivo();
+
+
+
+    delete acumVec;
+
 }
 
 void bPunto2(){
@@ -362,6 +428,69 @@ void bPunto2(){
 }
 
 void bPunto3(){
+
+    ArchivoNuevoPunto1 objAN;
+
+    ArchivoClientes ARc("clientes.dat");
+    Cliente obtC;
+
+    int tam1;
+    tam1 = ARc.contarRegistros();
+
+    int *acumVec = new int[tam1];
+
+    PonerCeroVector(acumVec,tam1);
+    
+    ArchivoVentas ARv("ventas.dat");
+    Venta obtV;
+
+    int tam2;
+    tam2 = ARv.contarRegistros();
+
+    for(int x=0; x<tam1; x++){
+        obtC = ARc.leerRegistro(x);
+
+            if((obtC.getEstado()==true)){
+
+                for(int y=0; y<tam2; y++){
+
+                    obtV = ARv.leerRegistro(y);
+                    ArchivoNuevoPunto1 ObjArP3(obtV.getImporte());
+
+
+                    if((obtV.getEstado()==true)&&(ObjArP3<15000)){
+
+                        if(((strcmp(obtV.getNumeroDeCliente(), obtC.getCodigoCliente()) == 0))){
+                            acumVec[x]=acumVec[x]+obtV.getImporte();
+                        }
+
+                    }
+
+                }
+            }
+
+
+    }
+
+//CARGAR y MOSTRAR ARCHIVOS
+for(int x=0; x<tam1; x++){
+    obtC = ARc.leerRegistro(x);
+
+    if(acumVec[x]>0){
+        objAN.setCodigoCliente(obtC.getCodigoCliente());
+        objAN.setNombre(obtC.getNombre());
+        objAN.setImporte(acumVec[x]);
+        if(objAN.grabarRegistro()){}//cout<<"Perfeto PA"<<endl;}
+    }
+
+
+}
+    objAN.MostrarArchivo();
+    objAN.LimpiarArchivo();
+
+
+
+    delete acumVec;
 
 }
 
