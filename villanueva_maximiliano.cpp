@@ -121,7 +121,10 @@ void bPunto1();
 void bPunto2();
 void bPunto3();
 /////////////////////////
+void cPunto2();
+/////////////////////////
 void PonerCeroVector(int vec[],int tam);
+void PonerCeroVector(ArchivoNuevoPunto1 objA[],int tam);
 void MostrarVector(int vec[],int tam);
 /////////////////////////
 
@@ -142,6 +145,9 @@ int main(){
     cout<<"-----------------------"<<endl;
     cout<<"bPunto2"<<endl;
     bPunto2();
+    cout<<"-----------------------"<<endl;
+    cout<<"cPunto2"<<endl;
+    cPunto2();
 
 
 
@@ -556,8 +562,67 @@ for(int x=0; x<tam1; x++){
 }
 
 /////////////////////////////////////////////////////////////////////////
+void cPunto2(){
 
 
+    ArchivoClientes ARc("clientes.dat");
+    Cliente obtC;
+
+    int tam1;
+    tam1 = ARc.contarRegistros();
+
+    ArchivoNuevoPunto1 *objAN = new ArchivoNuevoPunto1[tam1];
+    
+    PonerCeroVector(objAN,tam1);
+
+ArchivoVentas ARv("ventas.dat");
+    Venta obtV;
+
+    int tam2;
+    tam2 = ARv.contarRegistros();
+
+    for(int x=0; x<tam1; x++){
+        obtC = ARc.leerRegistro(x);
+
+            if((obtC.getEstado()==true)){
+
+                for(int y=0; y<tam2; y++){
+
+                    obtV = ARv.leerRegistro(y);
+
+                    if((obtV.getEstado()==true)&&(obtV.getImporte()<15000)){
+
+                        if(((strcmp(obtV.getNumeroDeCliente(), obtC.getCodigoCliente()) == 0))){
+                            objAN[x].setCodigoCliente(obtC.getCodigoCliente());
+                            objAN[x].setImporte( objAN[x].getImporte() + obtV.getImporte() );
+                            objAN[x].setNombre(obtC.getNombre());
+                        }
+
+                    }
+
+                }
+            }
+
+
+    }
+//MOSTRAR ARCHIVOS y DELETE
+for(int x=0; x<tam1; x++){
+
+
+    if(objAN[x].getImporte()>0){
+
+        cout<<"Codigo de Cliente: "<<objAN[x].getCodigoCliente()<<endl;
+        cout<<"Nombre: "<<objAN[x].getNombre()<<endl;
+        cout<<"Importe: "<<objAN[x].getImporte()<<endl;
+    }
+
+}
+
+
+    delete[] objAN;
+
+}
+/////////////////////////////////////////////////////////////////////////
 
 
 
@@ -565,6 +630,11 @@ for(int x=0; x<tam1; x++){
 void PonerCeroVector(int vec[],int tam){
     for(int i=0; i<tam; i++){
         vec[i]=0;
+    }
+}
+void PonerCeroVector(ArchivoNuevoPunto1 objA[],int tam){
+    for(int i=0; i<tam; i++){
+        objA[i].setImporte(0);
     }
 }
 
