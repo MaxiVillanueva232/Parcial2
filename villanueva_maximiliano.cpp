@@ -137,10 +137,12 @@ int main(){
     // objV.MostrarArchivo();
     // obtG.MostrarArchivo();
 
-    cout<<"aPunto1"<<endl;
-    aPunto1();
-    cout<<"aPunto3"<<endl;
-    aPunto3();
+    cout<<"aPunto2"<<endl;
+    aPunto2();
+    cout<<"-----------------------"<<endl;
+    cout<<"bPunto2"<<endl;
+    bPunto2();
+
 
 
 	cout<<endl;
@@ -269,7 +271,7 @@ void aPunto2(){
 
 
 
-//CARGAR y DELETE archivo y MOSTRAR ARCHIVOS
+//MOSTRAR ARCHIVOS y DELETE
 for(int x=0; x<tam1; x++){
 
 
@@ -424,6 +426,65 @@ for(int x=0; x<tam1; x++){
 }
 
 void bPunto2(){
+
+
+    ArchivoClientes ARc("clientes.dat");
+    Cliente obtC;
+
+    int tam1;
+    tam1 = ARc.contarRegistros();
+
+    ArchivoNuevoPunto1 *objAN = new ArchivoNuevoPunto1[tam1];
+    
+    int *vecImporte = new int[tam1];
+    PonerCeroVector(vecImporte,tam1);
+
+ArchivoVentas ARv("ventas.dat");
+    Venta obtV;
+
+    int tam2;
+    tam2 = ARv.contarRegistros();
+
+    for(int x=0; x<tam1; x++){
+        obtC = ARc.leerRegistro(x);
+
+            if((obtC.getEstado()==true)){
+
+                for(int y=0; y<tam2; y++){
+
+                    obtV = ARv.leerRegistro(y);
+
+                    if((obtV.getEstado()==true)&&(obtV.getImporte()<15000)){
+
+                        if(((strcmp(obtV.getNumeroDeCliente(), obtC.getCodigoCliente()) == 0))){
+                            objAN[x].setCodigoCliente(obtC.getCodigoCliente());
+                            vecImporte[x]=vecImporte[x]+obtV.getImporte();
+                            objAN[x].setNombre(obtC.getNombre());
+                        }
+
+                    }
+
+                }
+            }
+
+
+    }
+//MOSTRAR ARCHIVOS y DELETE
+for(int x=0; x<tam1; x++){
+
+
+    if(vecImporte[x]>0){
+
+        cout<<"Codigo de Cliente: "<<objAN[x].getCodigoCliente()<<endl;
+        cout<<"Nombre: "<<objAN[x].getNombre()<<endl;
+        cout<<"Importe: "<<vecImporte[x]<<endl;
+    }
+
+}
+
+
+    delete[] objAN;
+    delete vecImporte;
 
 }
 
