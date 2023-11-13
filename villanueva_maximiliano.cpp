@@ -140,14 +140,13 @@ int main(){
     // objV.MostrarArchivo();
     // obtG.MostrarArchivo();
 
+    cout<<"aPunto1"<<endl;
+    aPunto1();
+    cout<<"-----------------------"<<endl;
     cout<<"aPunto2"<<endl;
     aPunto2();
     cout<<"-----------------------"<<endl;
-    cout<<"bPunto2"<<endl;
-    bPunto2();
-    cout<<"-----------------------"<<endl;
-    cout<<"cPunto2"<<endl;
-    cPunto2();
+
 
 
 
@@ -341,7 +340,7 @@ void aPunto3(){
 
     }
 
-//CARGAR y MOSTRAR ARCHIVOS
+//CARGAR y ARCHIVOS
 for(int x=0; x<tam1; x++){
     obtC = ARc.leerRegistro(x);
 
@@ -354,7 +353,7 @@ for(int x=0; x<tam1; x++){
 
 
 }
-    objAN.MostrarArchivo();
+    //objAN.MostrarArchivo();
     objAN.LimpiarArchivo();
 
 
@@ -539,7 +538,7 @@ void bPunto3(){
 
     }
 
-//CARGAR y MOSTRAR ARCHIVOS
+//CARGAR y ARCHIVOS
 for(int x=0; x<tam1; x++){
     obtC = ARc.leerRegistro(x);
 
@@ -552,7 +551,7 @@ for(int x=0; x<tam1; x++){
 
 
 }
-    objAN.MostrarArchivo();
+    //objAN.MostrarArchivo();
     objAN.LimpiarArchivo();
 
 
