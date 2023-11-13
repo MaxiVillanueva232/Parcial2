@@ -202,7 +202,7 @@ void aPunto1(){
 
 //MostrarVector(acumVec,tam1);
 
-//CARGAR y MOSTRAR ARCHIVOS
+//CARGAR ARCHIVOS
 for(int x=0; x<tam1; x++){
     obtC = ARc.leerRegistro(x);
 
@@ -215,7 +215,7 @@ for(int x=0; x<tam1; x++){
 
 
 }
-    objAN.MostrarArchivo();
+    //objAN.MostrarArchivo();
     objAN.LimpiarArchivo();
 
 
@@ -409,7 +409,7 @@ void bPunto1(){
 
 //MostrarVector(acumVec,tam1);
 
-//CARGAR y MOSTRAR ARCHIVOS
+//CARGAR y ARCHIVOS
 for(int x=0; x<tam1; x++){
     obtC = ARc.leerRegistro(x);
 
@@ -422,7 +422,7 @@ for(int x=0; x<tam1; x++){
 
 
 }
-    objAN.MostrarArchivo();
+    //objAN.MostrarArchivo();
     objAN.LimpiarArchivo();
 
 
